@@ -1,33 +1,52 @@
 import {Dispatch} from 'redux'
-import {setAppStatusAC} from '../../app/app-reducer'
+import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
 import {authAPI, LoginParamsType} from '../../api/todolists-api'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     isLoggedIn: false
 }
 
-export const slice = createSlice({
+export const AuthSlice = createSlice({
     name: "auth",
     initialState: initialState,
     reducers: {
-        setIsLoggedInAC(state, action: PayloadAction<{ value: boolean }>) {
-            state.isLoggedIn = action.payload.value
+        setIsLoggedInAC(state, action: PayloadAction<boolean>){
+            state.isLoggedIn = action.payload;
         }
     }
-})
+});
 
-export const authReducer = slice.reducer;
-export const {setIsLoggedInAC} = slice.actions.setIsLoggedInAC
+export const authReducer = AuthSlice.reducer;
+export const AuthSliceActions = AuthSlice.actions
 
-export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+// thunks
+// export const loginTC = createAsyncThunk("test",(data: LoginParamsType,ThunkApi) => {
+//     const {dispatch} = ThunkApi
+//     dispatch(setAppStatusAC({status: 'loading'}))
+//     authAPI.login(data)
+//         .then(res => {
+//             if (res.data.resultCode === 0) {
+//                 dispatch(AuthSliceActions.setIsLoggedInAC(true))
+//                 dispatch(setAppStatusAC({status: 'succeeded'}))
+//             } else {
+//                 handleServerAppError(res.data, dispatch)
+//             }
+//         })
+//         .catch((error) => {
+//             handleServerNetworkError(error, dispatch)
+//         })
+// }
+
+export const loginTC = createAsyncThunk("test",(data: LoginParamsType,ThunkApi) => {
+    const {dispatch} = ThunkApi
+   // dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.login(data)
         .then(res => {
             if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({value: true}))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(AuthSliceActions.setIsLoggedInAC(true))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -36,13 +55,14 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
             handleServerNetworkError(error, dispatch)
         })
 }
-export const logoutTC = () => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+
+export const logoutTC = () => (dispatch: Dispatch<SetAppErrorActionType | SetAppStatusActionType>) => {
+    dispatch(setAppStatusAC( 'loading'))
     authAPI.logout()
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: false}))
-                dispatch(setAppStatusAC('succeeded'))
+                dispatch(setAppStatusAC( 'succeeded'))
             } else {
                 handleServerAppError(res.data, dispatch)
             }

@@ -21,7 +21,8 @@ import {Login} from '../features/Login/Login'
 import {logoutTC} from '../features/Login/auth-reducer'
 
 type PropsType = {
-    demo?: boolean
+    demo?: any
+    //demo?: boolean
 }
 
 function App({demo = false}: PropsType) {
