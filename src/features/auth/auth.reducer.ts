@@ -5,7 +5,6 @@ import { clearTasksAndTodolists } from 'common/actions';
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from 'common/utils';
 import { ResultCode } from 'common/enums';
 
-
 const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>
 ('auth/login', async (arg, thunkAPI) => {
 	const {dispatch, rejectWithValue} = thunkAPI
