@@ -15,7 +15,6 @@ type FormikErrorType = {
 	password?: string
 	rememberMe?: boolean
 }
-
 export const Login = () => {
 	const dispatch = useAppDispatch()
 
@@ -60,7 +59,6 @@ export const Login = () => {
 	if (isLoggedIn) {
 		return <Navigate to={'/'}/>
 	}
-
 
 	return <Grid container justifyContent="center">
 		<Grid item xs={4}>
