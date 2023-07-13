@@ -66,8 +66,9 @@ export const Login = () => {
 				<FormControl>
 					<FormLabel>
 						<p>
-							To log in get registered <a href={'https://social-network.samuraijs.com/'}
-														target={'_blank'} rel="noreferrer">here</a>
+							To log in get registered
+							<a href={'https://social-network.samuraijs.com/'}
+							   target={'_blank'} rel="noreferrer">here</a>
 						</p>
 						<p>
 							or use common test account credentials:
